@@ -5,3 +5,5 @@ set(SRC_LIST app/quick_union.cpp
             app/main.cpp)
 
 add_executable(app ${HDR_LIST} ${SRC_LIST})
+
+add_subdirectory(tests)

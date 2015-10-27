@@ -2,7 +2,6 @@
 
 #include <vector>
 
-
 class QuickUnion {
 public:
     QuickUnion(unsigned size);
@@ -15,6 +14,4 @@ private:
     IntArray m_sizes;
 
     unsigned getRoot(unsigned) const;
-    void initArray(IntArray&, unsigned);
-
 };
