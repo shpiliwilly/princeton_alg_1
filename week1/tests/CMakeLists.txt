@@ -11,6 +11,3 @@ include_directories(../app)
 add_executable(unit_tests ${APP_SRC_LIST} ${TEST_SRC_LIST})
 target_link_libraries(unit_tests gtest gtest_main)
 
-#set(HDR_LIST )
-#set(SRC_LIST quick_union_tests.cpp)
-#add_executable(app ${HDR_LIST} ${SRC_LIST})
