@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 2.8)
 
-set(HDR_LIST app/quick_union.h)
+set(HDR_LIST app/quick_union.h
+             app/percolation.h)
 set(SRC_LIST app/quick_union.cpp
-            app/main.cpp)
+             app/percolation.cpp
+             app/main.cpp)
 
 add_executable(app ${HDR_LIST} ${SRC_LIST})
 
