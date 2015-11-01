@@ -1,10 +1,11 @@
 #include <stdexcept>
 #include "percolation.h"
+#include <iostream>
 
 Percolation::Percolation(int N)
     : m_union(N * N)
     , m_N(N) {
-    m_top = m_N;
+    m_top = m_N * m_N;
     m_boottom = m_top + 1;
     m_site.resize(N * N, 0);
 }
@@ -15,7 +16,7 @@ bool Percolation::isInvalid(int i) {
 
 bool Percolation::isOpen(int i, int j) {
     if(isInvalid(i) || isInvalid(j)) 
-        throw std::invalid_argument("arguments are out of range");
+        throw std::invalid_argument("Percolation::isOpen(): arguments are out of range");
     return m_site[translate(i, j)] != 0;
 }
     
@@ -33,13 +34,13 @@ void Percolation::link(unsigned p, unsigned q) {
 
 void Percolation::open(int i, int j) {
     if(isInvalid(i) || isInvalid(j)) 
-        throw std::invalid_argument("arguments are out of range");
+        throw std::invalid_argument("Percolation::open(): arguments are out of range");
     // open given site
     unsigned current = translate(i, j);
     m_site[current] = 1;
     // connect newly open site with all open neighborhood
-    unsigned neighbour_top = i == 1 ? m_top : translate(i - 1, j);
-    unsigned neighbour_bottom = i == m_N ? m_boottom : translate(i, j + 1);
+    unsigned neighbour_top = (i == 1) ? m_top : translate(i - 1, j);
+    unsigned neighbour_bottom = (i == m_N) ? m_boottom : translate(i, j + 1);
     link(current, neighbour_top);
     link(current, neighbour_bottom);
     if(j > 1)

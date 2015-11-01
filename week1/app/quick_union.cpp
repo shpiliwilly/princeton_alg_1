@@ -10,7 +10,7 @@ QuickUnion::QuickUnion(unsigned size) {
 
 void QuickUnion::link(unsigned q, unsigned p) {
     if(p >= m_roots.size() || q >= m_roots.size())
-        throw std::invalid_argument("arguments are out of range");
+        throw std::invalid_argument("QuickUnion::link(): arguments are out of range");
 
     unsigned root_p = getRoot(p);
     unsigned root_q = getRoot(q);
@@ -25,7 +25,7 @@ void QuickUnion::link(unsigned q, unsigned p) {
 
 bool QuickUnion::connected(unsigned q, unsigned p) {
     if(p >= m_roots.size() || q >= m_roots.size())
-        throw std::invalid_argument("arguments are out of range");
+        throw std::invalid_argument("QuickUnion::connected(): arguments are out of range");
     return getRoot(q) == getRoot(p);
 }
 
