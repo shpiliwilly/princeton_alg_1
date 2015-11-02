@@ -20,6 +20,8 @@ private:
 };
 
 class PercolationStats {
+    double performTest(int N);
+    double m_mean;
 public:
     PercolationStats(int N, int T);     // perform T independent experiments on an N-by-N grid
     double mean();                      // sample mean of percolation threshold
