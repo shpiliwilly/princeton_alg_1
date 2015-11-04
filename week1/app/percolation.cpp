@@ -58,7 +58,6 @@ bool Percolation::percolates() {
 
 PercolationStats::PercolationStats(int N, int T) 
     : m_mean(0) {
-    std::cout << N << std::endl << T << std::endl;
     for(unsigned i = 0; i < T; i++) {
         m_mean += performTest(N);
     }
@@ -66,17 +65,14 @@ PercolationStats::PercolationStats(int N, int T)
 }
 
 double PercolationStats::performTest(int N) {
-    std::cout << "performing test with N = " << N << std::endl;
     Percolation perc(N);
     unsigned opened = 0;
     while(!perc.percolates()) {
         int i = rand() % N + 1;
         int j = rand() % N + 1;
         perc.open(i, j);
-        std::cout << "(" << i << ", " << j << ") opened on iteration " << opened << std::endl;
         opened++;
     }
-    std::cout << "systmem percolates! sites open " << opened << " (of " << N * N << ")" << std::endl;
     return ((double)opened) / (N * N);
 }
 
