@@ -29,6 +29,18 @@ TEST(QuickUnion, connectivity) {
     ASSERT_TRUE(un.connected(0, 2));
     un.link(2, 4);
     ASSERT_TRUE(un.connected(0, 5));
+    ASSERT_FALSE(un.connected(0, 6));
+    ASSERT_FALSE(un.connected(0, 9));
+    ASSERT_FALSE(un.connected(8, 9));
+    un.link(6, 9);
+    un.link(7, 8);
+    ASSERT_FALSE(un.connected(0, 8));
+    ASSERT_FALSE(un.connected(0, 9));
+    un.link(6, 4);
+    ASSERT_TRUE(un.connected(0, 9));
+    ASSERT_FALSE(un.connected(0, 8));
+    un.link(5, 7);
+    ASSERT_TRUE(un.connected(8, 9));
 }
 
 TEST(QuickUnion, invalidArgs) {
