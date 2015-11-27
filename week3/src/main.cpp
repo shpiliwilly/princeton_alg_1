@@ -8,25 +8,25 @@
 
 
 std::chrono::milliseconds testSort(unsigned size) {
-    std::vector<int> arr(size);
+//    std::vector<int> arr(size);
+ //   for(auto i = 0; i < size; i++) {
+  //      arr[i] = std::rand() % 1000;
+   // }
+    std::list<int> lst;
     for(auto i = 0; i < size; i++) {
-        arr[i] = std::rand() % 1000;
+        lst.push_back(std::rand() % 1000);
     }
+
 
     std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
     // my::insertion_sort(arr.begin(), arr.end());
-    my::merge_sort_recursive(arr.begin(), arr.end());
+    // my::merge_sort_recursive(arr.begin(), arr.end());
+    // my::bottom_up_mergesort(arr.begin(), arr.end());
+    my::list_mergesort(lst.begin(), lst.end());
+
     std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
 
     return std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
-}
-
-template<typename T>
-void printVector(const std::vector<T>& vec, const char* prefix) {
-    std::cout << prefix;
-    for(auto a : vec) 
-        std::cout << a << ", ";
-    std::cout << std::endl;
 }
 
 template <typename RandomAccessIterator>
@@ -40,6 +40,13 @@ void printRange(const char* prefix, RandomAccessIterator first, RandomAccessIter
 int main() {
 
     std::srand(std::time(0));
+
+
+    std::list<int> test_list = { 127, -23, 8432, 0, 23, 45, 234, -15, -54, 32, 64, 234, 756, 67, 234, 0, 45, 765, 4, 65};
+    printRange("before: ", test_list.begin(), test_list.end());
+    my::list_mergesort(test_list.begin(), test_list.end());
+    printRange("after:  ", test_list.begin(), test_list.end());
+    return 0;
 
     std::vector<unsigned> sizes = {100000, 200000, 400000};
         for(auto sizeIt = sizes.begin(); sizeIt != sizes.end(); sizeIt++) {

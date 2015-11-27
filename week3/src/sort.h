@@ -1,4 +1,5 @@
 #include <vector>
+#include <list>
 #include <iterator>
 #include <algorithm>
 
@@ -140,7 +141,6 @@ namespace my {
                     *curr = *mrg_r++;
             }
         }
-        printRange("merge_after: ", first, last);
     }
 
     int div_ceil(int x, int y) {
@@ -173,11 +173,64 @@ namespace my {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    // bottom-up merge sort algorithm for linked list-like structures (non recursive)
+    // O(N * lgN) worst case
+    // stable 
+    // O(N) extra memory
 
+    template<typename ForwardIterator>
+    void list_merge(ForwardIterator first, ForwardIterator mid, ForwardIterator last) {
+        if (last == first)
+            return;
+        // copy data to temp buffer
+        std::list<typename ForwardIterator::value_type> buff;
+        ForwardIterator buffMid = buff.end();
+        for(ForwardIterator it = first; it != last; ++it) {
+            buff.push_back(*it);
+            if(it == mid)
+                buffMid = buff.end();
+                --buffMid;
+        }
+        // begin merging
+        ForwardIterator mrgL = buff.begin();
+        ForwardIterator mrgR = buffMid;
+        for (ForwardIterator curr = first; curr != last; ++curr) {
+            if (mrgL == buffMid) 
+                *curr = *mrgR++;
+            else if (mrgR == buff.end()) 
+                *curr = *mrgL++;
+            else {
+                if(*mrgL <= *mrgR) 
+                    *curr = *mrgL++;
+                else
+                    *curr = *mrgR++;
+            }
+        }
+    }
 
-#if 0
-    template <typename RandomAccessIterator>
-    void quick_sort_3w(RandomAccessIterator first, RandomAccessIterator last);
-#endif
-
+    template<typename ForwardIterator>
+    void list_mergesort(ForwardIterator first, ForwardIterator last) {
+        auto taskSize = 2;
+        while(true) {
+            ForwardIterator curr = first;
+            while(curr != last) {
+                auto i = 0;
+                ForwardIterator taskL = curr;
+                ForwardIterator taskM = curr;
+                ForwardIterator taskR = curr;
+                while(i < taskSize || taskR != last) {
+                    ++i;
+                    ++taskR;
+                    if (i <= taskSize / 2)
+                        ++taskM;
+                }
+                list_merge(taskL, taskM, taskR);
+                curr = taskR;
+                taskSize *= 2;
+                if(taskL == first && taskR == last)
+                    return;
+            }
+        }
+    }
 }
