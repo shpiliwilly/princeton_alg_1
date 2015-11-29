@@ -87,17 +87,31 @@ namespace my {
     // O(N * lgN) average running time, O(N^2) worst case
     // not stable 
     // O(1) extra memory
-#if 0 
     template <typename RandomAccessIterator>
     RandomAccessIterator quick_partition(RandomAccessIterator first, RandomAccessIterator last) {
         auto problemSize = std::distance(first, last);
         // TODO. check that this statement really picks up random pivot from all available elemets
-        RandomAccessIterator pivot = std::rand() % problemSize;
 
-        typename RandomAccessIterator::value_type tmp = *last;
-        *last = *pivot;
-        *pivot = *tmp;
+        // select pivot element and move it to the end of the array
+        RandomAccessIterator pivot = first + std::rand() % problemSize;
+        std::cout << "problemSize = " << problemSize << std::endl;
+        std::swap(*pivot, *(last - 1));
 
+        int lessEqualIndex = -1;
+        int biggerIndex = -1;
+        const auto& pivotVal = *(last - 1);
+        for(RandomAccessIterator curr = first; curr != (last - 1); ++curr) {
+            if(*curr > pivotVal)
+                ++biggerIndex;
+            else {
+                // swap first element that bigger than pivot with `curr`
+                std::swap(*(first + lessEqualIndex), *curr);
+                ++lessEqualIndex;
+                ++biggerIndex;
+            }
+        }
+        std::swap(*(last - 1), *(first + lessEqualIndex - 1));
+        return first + lessEqualIndex;
     }
 
     template <typename RandomAccessIterator>
@@ -108,8 +122,6 @@ namespace my {
         quick_sort(first, pivot);
         quick_sort(pivot, last);
     }
-
-#endif
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // bottom-up merge sort algorithm (non recursive)

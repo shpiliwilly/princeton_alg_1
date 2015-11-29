@@ -47,9 +47,15 @@ void printRange(const char* prefix, RandomAccessIterator first, RandomAccessIter
 int main() {
     std::srand(std::time(0));
 
+    std::vector<int> test_vec = { 127, -23, 8432, 0, 23, 45, 234, -15, -54, 32, 64, 234, 756, 67, 234, 0, 45, 765, 4, 65};
+    printRange("before: ", test_vec.begin(), test_vec.end());
+    my::quick_sort(test_vec.begin(), test_vec.end());
+    printRange("after:  ", test_vec.begin(), test_vec.end());
+    return 0;
+
     std::vector<unsigned> sizes = {100000, 200000, 400000, 800000};
         for(auto sizeIt = sizes.begin(); sizeIt != sizes.end(); sizeIt++) {
-        auto durationMs = testListSort(*sizeIt);
+        auto durationMs = testArraySort(*sizeIt);
         std::cout << "size =     " << *sizeIt << std::endl;
         std::cout << "duration(ms) = " << durationMs.count() << std::endl;
         std::cout << "================================" << std::endl;
