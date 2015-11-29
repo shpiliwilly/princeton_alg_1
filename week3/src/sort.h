@@ -180,18 +180,21 @@ namespace my {
     // O(N) extra memory
 
     template<typename ForwardIterator>
-    void list_merge(ForwardIterator first, ForwardIterator mid, ForwardIterator last) {
+    void list_merge(ForwardIterator first, ForwardIterator mid, ForwardIterator last, unsigned taskSize) {
         if (last == first)
             return;
+        
         // copy data to temp buffer
         std::list<typename ForwardIterator::value_type> buff;
         ForwardIterator buffMid = buff.end();
         for(ForwardIterator it = first; it != last; ++it) {
             buff.push_back(*it);
-            if(it == mid)
+            if(it == mid) {
                 buffMid = buff.end();
                 --buffMid;
+            }
         }
+
         // begin merging
         ForwardIterator mrgL = buff.begin();
         ForwardIterator mrgR = buffMid;
@@ -214,23 +217,31 @@ namespace my {
         auto taskSize = 2;
         while(true) {
             ForwardIterator curr = first;
+            bool firstTask = true;
             while(curr != last) {
                 auto i = 0;
                 ForwardIterator taskL = curr;
                 ForwardIterator taskM = curr;
                 ForwardIterator taskR = curr;
-                while(i < taskSize || taskR != last) {
+                while(i < taskSize && taskR != last) {
                     ++i;
                     ++taskR;
-                    if (i <= taskSize / 2)
-                        ++taskM;
+                    if(firstTask) {
+                        if(i <= taskSize / 2)
+                            ++taskM;
+                    } else {
+                        if (i % 2 == 0) 
+                            ++taskM;
+                    }
                 }
-                list_merge(taskL, taskM, taskR);
+                list_merge(taskL, taskM, taskR, taskSize);
+                firstTask = false;
                 curr = taskR;
-                taskSize *= 2;
                 if(taskL == first && taskR == last)
                     return;
             }
+            taskSize *= 2;
         }
     }
 }
+
