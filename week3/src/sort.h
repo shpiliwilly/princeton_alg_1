@@ -89,16 +89,16 @@ namespace my {
     // O(1) extra memory
     template <typename RandomAccessIterator>
     RandomAccessIterator quick_partition(RandomAccessIterator first, RandomAccessIterator last) {
-        auto problemSize = std::distance(first, last);
-        // TODO. check that this statement really picks up random pivot from all available elemets
-
+        if(first >= last)
+            return first;
+                
         // select pivot element and move it to the end of the array
+        auto problemSize = std::distance(first, last);
         RandomAccessIterator pivot = first + std::rand() % problemSize;
-        std::cout << "problemSize = " << problemSize << std::endl;
         std::swap(*pivot, *(last - 1));
 
-        int lessEqualIndex = -1;
-        int biggerIndex = -1;
+        int lessEqualIndex = 0;
+        int biggerIndex = 0;
         const auto& pivotVal = *(last - 1);
         for(RandomAccessIterator curr = first; curr != (last - 1); ++curr) {
             if(*curr > pivotVal)
@@ -110,13 +110,14 @@ namespace my {
                 ++biggerIndex;
             }
         }
-        std::swap(*(last - 1), *(first + lessEqualIndex - 1));
+
+        std::swap(*(last - 1), *(first + lessEqualIndex));
         return first + lessEqualIndex;
     }
 
     template <typename RandomAccessIterator>
     void quick_sort(RandomAccessIterator first, RandomAccessIterator last) {
-        if(first >= last)
+        if(last - first <= 1)
             return;
         RandomAccessIterator pivot = quick_partition(first, last);
         quick_sort(first, pivot);
